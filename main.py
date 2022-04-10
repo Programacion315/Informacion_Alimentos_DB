@@ -13,7 +13,17 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
+#Conexion base de datos
+import pymysql
 
+connection = pymysql.connect(
+    host="localhost",
+    user="root",
+    password="admin",
+    db="comida"
+)
+
+cursor = connection.cursor()
 
 
 #EDITAR
@@ -23,12 +33,9 @@ chromePath= Service(r'C:\Users\jluiso315\Documents\driver\chromedriver.exe')
 driver=webdriver.Chrome(service = chromePath)
 
 
-
-
 #Entramos a la pagina web deseada
 search_URL = "https://www.tabladecalorias.net/"
 driver.get(search_URL)
-
 
 
 time.sleep(2)
@@ -38,9 +45,7 @@ time.sleep(2)
 #Me devuelve todos los elementos con tag a.
 
 
-
 tag_a = driver.find_elements(by=By.TAG_NAME,value="a")
-
 
 
 nombre = []
@@ -50,7 +55,6 @@ for con in tag_a:
         nombre.append(con.get_attribute('href'))
     counter += 1
 print(nombre)
-
 
 for link in nombre:
     #driver.find_element(By.LINK_TEXT, link).click()
@@ -71,9 +75,11 @@ for link in nombre:
             cantidad = row.find('td', class_='serving 100g').text
             calorias = row.find('td', class_='kcal').text
 
-            print(nombreComida + " " + cantidad + " " + calorias)
-
-
+            #Instruccion sql para llenar nuestra base de datos.
+            #print(f"{nombreComida} - {cantidad} - {calorias}")
+            sql = f"INSERT INTO alimento(nombre, cantidad, calorias) VALUES('{nombreComida}', '{cantidad}', '{calorias}')"
+            cursor.execute(sql)
+            connection.commit()
 
     time.sleep(2)
 
