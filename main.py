@@ -44,7 +44,6 @@ time.sleep(2)
 
 #Me devuelve todos los elementos con tag a.
 
-
 tag_a = driver.find_elements(by=By.TAG_NAME,value="a")
 
 
@@ -57,9 +56,8 @@ for con in tag_a:
 print(nombre)
 
 for link in nombre:
-    #driver.find_element(By.LINK_TEXT, link).click()
-    driver.get(link)
 
+    driver.get(link)
     #Cuando entre queremos usar beautiful soup para
     #robarnos los datos de las tablas
     url = link
@@ -77,9 +75,9 @@ for link in nombre:
 
             #Instruccion sql para llenar nuestra base de datos.
             #print(f"{nombreComida} - {cantidad} - {calorias}")
-            sql = f"INSERT INTO alimento(nombre, cantidad, calorias) VALUES('{nombreComida}', '{cantidad}', '{calorias}')"
-            cursor.execute(sql)
-            connection.commit()
+            #sql = f"INSERT INTO alimento(nombre, cantidad, calorias) VALUES('{nombreComida}', '{cantidad}', '{calorias}')"
+            #cursor.execute(sql)
+            #connection.commit()
 
     time.sleep(2)
 
